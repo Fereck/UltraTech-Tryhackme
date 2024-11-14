@@ -5,8 +5,17 @@ Conceptos basicos en Pentesting, Webapp testing and Pivoting
 
  - Gobuster
  - Nmap
- - Inyeccion de OS
- - Docker Revershell
+ - GTFOBins
+ - Os Command Injection
+
+## Para la estrutura de la prueba me basare en _iso 27001_
+
+	-Reconocimiento. 
+	-Análisis de Vulnerabilidades. 
+	-Explotacion de Vulnerabilidades.
+	-Escalada de Privilegios y Movimiento lateral.
+	-Post-Explotacion y Impacto.
+	-Reporte y Documetacion de Resultados.
 
 
 
@@ -18,7 +27,19 @@ Necesitamos investigar a lo que estamos atacando.
 ![imagen](https://github.com/user-attachments/assets/596c4537-c395-499f-a235-790318d906aa)
 
 
-Explicaciones de los parametros: 
+### Explicaciones de los parametros: 
+`-Pn`: Evita el "pinguear" el puerto para ver si esta activo, con esto asume que esta activo y sirve contra redes que tiene bloqueado los pings ICMP.
+
+`-sVC`: Estos dos `-sV` el cual detecta servicios y sus versiones, `-sC` obtiene informacion adicional sobre servicios ademas de posibles vulnerabilidades.
+
+`-p-`: Escanea todos lo puertos posibles, a diferencia de un escaneo normal que solo escanea los 1000 más comunes.
+
+`-n`: Desactiva la resolucion DNS. (Nmap no intentara convertir la direccion IP a un nombre de Host)
+
+`--min-rate 500`: Ajusta la velocidad minima de envio de paquetes a 500 por segundo, esto genera demasiado ruido en la red, por lo que hace el escaneo mas rapido pero mas detectable.  
+
+
+
 
 ### Task 2 :
 
@@ -50,7 +71,6 @@ Para comprobar que se puede injectar, vamos a ingresar /Ping?ip=10.9.0.72
 Como podemos ver el equipo nos leyo el comando por lo que nos podemo comunicar a un sistema, ahora 
 
 ![imagen](https://github.com/user-attachments/assets/205b51f2-2fdd-4180-972d-f21a850c3ac9)
-
 
 
 

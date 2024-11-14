@@ -37,9 +37,7 @@ Necesitamos investigar a lo que estamos atacando.
 `-n`: Desactiva la resolucion DNS. (Nmap no intentara convertir la direccion IP a un nombre de Host)
 
 `--min-rate 500`: Ajusta la velocidad minima de envio de paquetes a 500 por segundo, esto genera demasiado ruido en la red, por lo que hace el escaneo mas rapido pero mas detectable.  
-
-
-
+	
 
 ### Task 2 :
 
@@ -64,18 +62,11 @@ Por encima no se ve nada, ahora usando Gobuster para ver si tiene directorio ocu
 
 En puerto podemos notar una direcorio llamado /Ping , por lo que puede indicar una vulnerabilidad de OS command Injection
 
-Para comprobar que se puede injectar, vamos a ingresar /Ping?ip=10.9.0.72 
-
-![imagen](https://github.com/user-attachments/assets/b118dc30-8ee3-4ce6-80c2-d5fa831f272b)
-
-Como podemos ver el equipo nos leyo el comando por lo que nos podemo comunicar a un sistema, ahora 
-
-![imagen](https://github.com/user-attachments/assets/205b51f2-2fdd-4180-972d-f21a850c3ac9)
-
-
+Esto parece ser una vulnerabilidad muy grave por lo que me gustaria antes de profundizar en el tema ver que podemos encontrar en el otro puerto.
 
 
 ### Puerto 31331
+
 
 ![imagen](https://github.com/user-attachments/assets/6e957b64-2cd4-408a-bf61-9ba10d8c89c4)
 
@@ -100,13 +91,23 @@ y como vimos en el puerto 8081
 
 ![imagen](https://github.com/user-attachments/assets/fdf6da3f-377f-4e61-b6e5-2c6fd6e59a2b)
 
-es por eso que podemos hacer OS Inyeccion
+eso confirma que el directorio /ping es una vulnerabilidad OS Inyeccion, 
+
+
+Para comprobar que se puede injectar, vamos a ingresar /Ping?ip=10.9.0.72 
+
+![imagen](https://github.com/user-attachments/assets/b118dc30-8ee3-4ce6-80c2-d5fa831f272b)
+
 
 ademas de que gracias al "ls" pudimo ver que tiene una base sql y si leemos la con un "cat" 
 
+![imagen](https://github.com/user-attachments/assets/205b51f2-2fdd-4180-972d-f21a850c3ac9)
+
+
 ![imagen](https://github.com/user-attachments/assets/da94b295-0c02-46fc-8e52-713298761daa)
 
-podemos ver que se mencionan Mr00t: f357a0c52799563c7c7b76c1e7543a32 lo cual lo pasamos por Crackstation
+podemos ver que se mencionan dos usuarios pero el mas importante parecer ser **Mr00t: f357a0c52799563c7c7b76c1e7543a32**. 
+Parece ser una hash por lo que usamor "CrackStation" y nos da como resultado: **n100906**
 
 ![imagen](https://github.com/user-attachments/assets/902f8988-d847-4b11-90af-9d5ab0453a27)
 
@@ -118,10 +119,15 @@ podemos ver que se mencionan Mr00t: f357a0c52799563c7c7b76c1e7543a32 lo cual lo 
   
   (3) R/ n100906
 
-
+ahora que tenemos un usuario y una contraseña, intentaremos conectar por ssh.
 ![imagen](https://github.com/user-attachments/assets/368a74c5-e075-465c-ac6b-4213d29d8220)
 
+Para ver quien somos hago un `whoami` y vemos que somo root tambien aplicamos un `id` para ver mas informacion. 
+
 ![imagen](https://github.com/user-attachments/assets/fabe21a6-fa18-4010-ac35-d10eeecb48d5)
+
+Notamos que tiene un Docker el cual puede conterne una vulnerabilidad que nos permita escalar privilegios.
+
 
 usamos GTFOBins para buscar una vulnerabilidad 
 
@@ -133,11 +139,18 @@ Como en este caso ingresamos como root cambiamos el `alpine` por `bash`.
 
 ![imagen](https://github.com/user-attachments/assets/153abec3-225f-4099-ae62-952122ecb588)
 
+Una vez con los privilegios maximos, buscamos la ultima flag.
+
 ![imagen](https://github.com/user-attachments/assets/4a7d49b2-31ea-4cba-8258-ccd217aa6ed9)
+
+Vemos una carperta llamda "Root".
 
 ![imagen](https://github.com/user-attachments/assets/b5865c6c-86d0-4b57-bf07-ae9bdd11c83e)
 
+Ingreso y no se ve nada, pero puede tener carpetas ocultas por lo que usamos `ls -a`
+
 ![imagen](https://github.com/user-attachments/assets/aa95c603-5d9c-41e2-a76c-75c765a13730)
+Ingresamos a .ssh y vemos varias carpeta, pero ingreso un `cat * ` para abrir todo y con eso tenemos la ultima bandera.
 
 ### Task 4
 
